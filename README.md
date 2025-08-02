@@ -4,13 +4,13 @@ This project involves creating an ETL (Extract, Transform, Load) pipeline using 
 The project leverages Docker to run Airflow and Postgres as services, ensuring an isolated and reproducible environment. We also utilize Airflow hooks and operators to handle the ETL process efficiently.
 
 ### Key Components of the Project:
-1.)Airflow for Orchestration:
+### 1.Airflow for Orchestration:
 
 Airflow is used to define, schedule, and monitor the entire ETL pipeline. It manages task dependencies, ensuring that the process runs sequentially and reliably.
 The Airflow DAG (Directed Acyclic Graph) defines the workflow, which includes tasks like data extraction, transformation, and loading.
 Postgres Database:
 
-2.)A PostgreSQL database is used to store the extracted and transformed data.
+### 2.A PostgreSQL database is used to store the extracted and transformed data.
 Postgres is hosted in a Docker container, making it easy to manage and ensuring data persistence through Docker volumes.
 We interact with Postgres using Airflow’s PostgresHook and PostgresOperator.
 NASA API (Astronomy Picture of the Day):
@@ -19,14 +19,14 @@ The external API used in this project is NASA’s APOD API, which provides data 
 We use Airflow’s SimpleHttpOperator to extract data from the API.
 
 ### Objectives of the Project:
-1.)Extract Data:
+### 1.Extract Data:
 
 The pipeline extracts astronomy-related data from NASA’s APOD API on a scheduled basis (daily, in this case).
-Transform Data:
+### 2.Transform Data:
 
-2.)Transformations such as filtering or processing the API response are performed to ensure that the data is in a suitable format before being inserted into the database.
+Transformations such as filtering or processing the API response are performed to ensure that the data is in a suitable format before being inserted into the database.
 
-3.)Load Data into Postgres:
+### 3.Load Data into Postgres:
 
 The transformed data is loaded into a Postgres database. The data can be used for further analysis, reporting, or visualization.
 Architecture and Workflow:
@@ -78,7 +78,3 @@ d:/ETL Pipeline/
     └── dags/
         └── test_dag_example.py
 ```
-
-
-- Thanks to the open-source community for the amazing tools and libraries
-- Special thanks to [Your Name] for initial implementation
