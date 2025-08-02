@@ -1,9 +1,49 @@
-# ETL Pipeline Project
+### Project Overview: Airflow ETL Pipeline with Postgres and API Integration
+This project involves creating an ETL (Extract, Transform, Load) pipeline using Apache Airflow. The pipeline extracts data from an external API (in this case, NASA's Astronomy Picture of the Day (APOD) API), transforms the data, and loads it into a Postgres database. The entire workflow is orchestrated by Airflow, a platform that allows scheduling, monitoring, and managing workflows.
 
-An ETL (Extract, Transform, Load) pipeline built using Apache Airflow for data processing and workflow management. This project is designed to handle data extraction from various sources, transform the data according to specified rules, and load it into a target system for analysis.
+The project leverages Docker to run Airflow and Postgres as services, ensuring an isolated and reproducible environment. We also utilize Airflow hooks and operators to handle the ETL process efficiently.
 
-## Overview
-This ETL pipeline is implemented as an Apache Airflow DAG (Directed Acyclic Graph) that automates the data processing workflow. The pipeline is containerized using Docker for easy deployment and management.
+### Key Components of the Project:
+1.)Airflow for Orchestration:
+
+Airflow is used to define, schedule, and monitor the entire ETL pipeline. It manages task dependencies, ensuring that the process runs sequentially and reliably.
+The Airflow DAG (Directed Acyclic Graph) defines the workflow, which includes tasks like data extraction, transformation, and loading.
+Postgres Database:
+
+2.)A PostgreSQL database is used to store the extracted and transformed data.
+Postgres is hosted in a Docker container, making it easy to manage and ensuring data persistence through Docker volumes.
+We interact with Postgres using Airflow’s PostgresHook and PostgresOperator.
+NASA API (Astronomy Picture of the Day):
+
+The external API used in this project is NASA’s APOD API, which provides data about the astronomy picture of the day, including metadata like the title, explanation, and the URL of the image.
+We use Airflow’s SimpleHttpOperator to extract data from the API.
+
+### Objectives of the Project:
+1.)Extract Data:
+
+The pipeline extracts astronomy-related data from NASA’s APOD API on a scheduled basis (daily, in this case).
+Transform Data:
+
+2.)Transformations such as filtering or processing the API response are performed to ensure that the data is in a suitable format before being inserted into the database.
+
+3.)Load Data into Postgres:
+
+The transformed data is loaded into a Postgres database. The data can be used for further analysis, reporting, or visualization.
+Architecture and Workflow:
+The ETL pipeline is orchestrated in Airflow using a DAG (Directed Acyclic Graph). 
+The pipeline consists of the following stages:
+
+### 1. Extract (E):
+The SimpleHttpOperator is used to make HTTP GET requests to NASA’s APOD API.
+The response is in JSON format, containing fields like the title of the picture, the explanation, and the URL to the image.
+### 2. Transform (T):
+The extracted JSON data is processed in the transform task using Airflow’s TaskFlow API (with the @task decorator).
+This stage involves extracting relevant fields like title, explanation, url, and date and ensuring they are in the correct format for the database.
+### 3. Load (L):
+The transformed data is loaded into a Postgres table using PostgresHook.
+If the target table doesn’t exist in the Postgres database, it is created automatically as part of the DAG using a create table task.
+
+The transformed data is loaded into a Postgres database. The data can be used for further analysis, reporting, or visualization.
 
 ### High-Level Architecture
 ```plaintext
@@ -39,121 +79,6 @@ d:/ETL Pipeline/
         └── test_dag_example.py
 ```
 
-## Features
 
-### Data Extraction
-- Multiple data source support (APIs, databases, files)
-- Configurable extraction intervals
-- Data versioning and tracking
-
-### Data Transformation
-- Data validation and cleansing
-- Data mapping and schema transformation
-- Data aggregation and filtering
-
-### Data Load
-- Support for multiple target systems (databases, data warehouses)
-- Incremental loading strategies
-- Data integrity checks
-
-### Orchestration
-- Automated workflow management using Airflow
-- Task dependencies and parallel execution
-- Error handling and retries
-
-### Utilities
-- Logging and monitoring
-- Configuration management
-- Environment isolation
-
-## Technical Stack
-- **Apache Airflow**: Workflow management and orchestration
-- **Docker**: Containerization and deployment
-- **Python**: Data processing and transformation logic
-- **SQLAlchemy**: Database operations and connections
-- **Apache HTTP Server**: Serving the Airflow web interface
-
-## Requirements
-- Docker installed on the system
-- Docker Compose installed for container orchestration
-- Python 3.8 or higher
-- Airflow dependencies (specified in requirements.txt)
-
-## Getting Started
-
-### Prerequisites
-1. Install Docker and Docker Compose
-2. Install Python 3.8 or higher
-3. Clone the repository:
-```bash
-git clone https://github.com/abhishek-paul-d/airflow-nasa-etl-pipeline.git
-```
-
-### Installation
-1. Navigate to the project directory:
-```bash
-cd airflow-nasa-etl-pipeline
-```
-2. Build and start the containers using Docker Compose:
-```bash
-docker-compose up -d
-```
-
-### Running the Pipeline
-1. Access the Airflow web interface at `http://localhost:8080`
-2. Trigger the ETL DAG manually or schedule it according to your needs
-3. Monitor the pipeline execution and logs through the Airflow interface
-
-## Configuration
-
-### Environment Variables
- Configure the following variables in your `.env` file:
-- `AIRFLOW_HOME`: Path to Airflow home directory
-- `DB_HOST`: Database host address
-- `DB_PORT`: Database port
-- `DB_USERNAME`: Database username
-- `DB_PASSWORD`: Database password
-
-### Pipeline Configuration
-Modify the DAG configuration in `dags/etl.py` to:
-- Set source and target connections
-- Define data transformation rules
-- Configure logging and monitoring
-
-## Best Practices
-1. Follow standard Python coding conventions
-2. Use meaningful commit messages
-3. Test changes locally before pushing
-4. Document new features and configuration options
-5. Maintain backward compatibility
-
-## Contributing
-1. Fork the repository
-2. Create a feature branch:
-```bash
-git checkout -b feature/your-feature-name
-```
-3. Commit your changes:
-```bash
-git commit -m "Add feature description"
-```
-4. Push to the branch:
-```bash
-git push origin feature/your-feature-name
-```
-5. Open a Pull Request
-
-## Changelog
-- v1.0.0 - Initial release with basic ETL functionality
-- v1.1.0 - Added Docker containerization support
-- v1.2.0 - Implemented Airflow DAG for workflow management
-- v1.3.0 - Enhanced documentation and project structure
-- v1.4.0 - Added comprehensive logging and monitoring
-
-## License
-MIT License
-
-## Acknowledgments
-- Inspired by Apache Airflow's best practices
 - Thanks to the open-source community for the amazing tools and libraries
 - Special thanks to [Your Name] for initial implementation
