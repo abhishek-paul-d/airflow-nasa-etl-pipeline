@@ -2,7 +2,7 @@ version: '3'
 services:
   postgres:
     image: postgres:13
-    ontainer_name: postgres_db
+    container_name: postgres_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -18,7 +18,8 @@ networks:
   airflow_network:
     external: false
 
-volume:
+volumes:
   postgres_data:
+
 
       
